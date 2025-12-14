@@ -12,7 +12,7 @@ export default defineConfig({
             async buildStart() {
                 const rates = await getRates()
                 await fs.mkdir('src/rates', { recursive: true })
-                await fs.writeFile('src/rates/rates.json', JSON.stringify(rates, null, 2))
+                await fs.writeFile('src/rates/rates.json', JSON.stringify(rates, null, 4))
             }
         }
     ],
