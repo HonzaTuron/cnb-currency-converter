@@ -1,9 +1,8 @@
-
 const API_URL = 'https://www.cnb.cz/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing/daily.txt'
 
 const NUMBER_VALUES_KEYS = ['amount', 'rate']
 
-function parseRatesTxt(ratesTxt: string) {
+export function parseRatesTxt(ratesTxt: string) {
     const lines = ratesTxt.split('\n')
 
     const [_ , headerLine, ...currencyLines] = lines
