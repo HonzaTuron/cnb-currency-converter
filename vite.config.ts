@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { promises as fs } from 'fs'
-import getRates from './src/queries/getRates'
+import getRates from './src/fetching/getRates'
 
 // https://vite.dev/config/
 export default defineConfig({

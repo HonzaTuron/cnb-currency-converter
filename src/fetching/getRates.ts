@@ -28,11 +28,12 @@ function parseRatesTxt(ratesTxt: string) {
 
 export default async function getRates() {
 
-    const ratesResponse = await fetch(API_URL)
+    try {
+        const ratesResponse = await fetch(API_URL)
+        const ratesTxt = await ratesResponse.text()
 
-    // TODO: handle errors
-
-    const ratesTxt = await ratesResponse.text()
-
-    return parseRatesTxt(ratesTxt)
+        return parseRatesTxt(ratesTxt)
+    } catch {
+        return []
+    }
 }

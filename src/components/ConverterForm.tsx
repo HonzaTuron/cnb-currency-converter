@@ -1,9 +1,12 @@
 import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import rates from '../rates/rates.json'
 import styled from "styled-components";
+import { loadRates } from "../queries/loadRates.ts";
 
-const StyledConverterForm = styled.form`
+const INPUT_MAX_VALUE = 9_999_999
+
+const StyledConverterForm = styled.div`
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -31,10 +34,15 @@ const StyledConverterForm = styled.form`
         background: white;
         font-size: 16px;
     }
+    
+    .result {
+        font-weight: bold;
+        white-space: nowrap;
+    }
 `
 
 export default function ConverterForm() {
-    const { data } = useQuery({ queryKey: ['rates'], queryFn: () => rates })
+    const { data } = useQuery({ queryKey: ['rates'], queryFn: loadRates })
 
     const [amount, setAmount] = useState(1)
     const [from, setFrom] = useState('USD')
@@ -51,8 +59,12 @@ export default function ConverterForm() {
             <input
                 className="amount-input"
                 type="number"
-                value={amount}
-                onChange={e => setAmount(e.target.valueAsNumber || 0)}
+                value={amount || ''}
+                onChange={e => {
+                    const numberValue = e.target.valueAsNumber
+
+                    setAmount(prevState => (numberValue < INPUT_MAX_VALUE || isNaN(numberValue)) ? numberValue : prevState)
+                }}
             />
             <select className="currency-select" value={from} onChange={e => setFrom(e.target.value)}>
                 {data?.map(item => (
@@ -61,7 +73,7 @@ export default function ConverterForm() {
                     </option>
                 ))}
             </select>
-            {' '}= {result.toFixed(2)} CZK
+            <div className="result">{' '}= {result.toFixed(2)} CZK</div>
         </StyledConverterForm>
     )
 }
